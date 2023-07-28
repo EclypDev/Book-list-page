@@ -61,15 +61,16 @@ function showBooks(name, img, desc, author, element) {
 fetch("http://localhost:3000/api/v1/books")
     .then((response) => response.json())
     .then((books) => {
-        books.forEach((book) => {
-            const name = book.book.title;
-            const img = book.book.cover;
-            const desc = book.book.synopsis;
-            const author = book.book.author.name;
+        books.forEach((data) => {
+            const name = data.book.title;
+            const img = data.book.cover;
+            const desc = data.book.synopsis;
+            const author = data.book.author.name;
             const gridlayout = $("#libros");
             showBooks(name, img, desc, author, gridlayout);
         });
     });
+
 
 // Definir imagen y elemento por defecto
 
