@@ -16,7 +16,7 @@
 --font-family: Montserrat, sans-serif;
 --opacity-image: 0.8;
 --blur-image: 5px;
---accent-color: #ffcc00;
+--accent-color: #ca6201;
 --link-color: #007bff;
 --highlight-color: #ff6b6b;
 --dark-text-color: #333333;
@@ -47,9 +47,15 @@ main {
   padding: 20px;
 }
 
-h1, h2, h3 {
-  color: var(--main-color);
-}
+  h1, h3 {
+    font-size: 3em;
+    color: var(--hover-buy);
+    text-align: center;
+    text-shadow: 1px 2px 5px var(--shadow-color);
+  }
+  h2 {
+    color: var(--hover-info)
+  }
 .subtitles {
   width: auto;
   border-radius: var(--border);
@@ -98,14 +104,14 @@ h1, h2, h3 {
   min-height: 200px;
   box-shadow: 2px 2px 2px rgba(255, 107, 255, 0.5);
 }
-
 .buttonSee {
   height: 40px;
-  width: 200px;
+  width: 100%;
   border-radius: var(--border);
   border: none;
   background-color: var(--green-button);
 }
+
 
 .buttonSee:hover {
   background-color: var(--hover-buy);

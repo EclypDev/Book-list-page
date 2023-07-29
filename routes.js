@@ -16,15 +16,21 @@ route.post("/", (req, res) => {
     console.log(datos);
 });
 
-const indexFile = path.join(__dirname, "public", "index.html");
+//Files
+
 route.get("/", (req, res) => {
-    res.sendFile(indexFile);
+    const indexPath = path.join(__dirname, "public", "index.html");
+    res.sendFile(indexPath);
+});
+route.get("/book", (req, res) => {
+    const bookFile = path.join(__dirname, "public", "book.html");
+    res.sendFile(bookFile);
 });
 route.get("/api/v1/books", (req, res) => {
     let books = data.library;
     res.json(books);
 });
-route.get("/book/:book", (req, res) => {
+route.get("/api/v1/book/:book", (req, res) => {
     let bookParam = req.params.book;
     let bookParamClean = bookParam.replace("%20", " ");
     let booksArray = data.library;

@@ -23,7 +23,6 @@ app.use(route);
 //Static Files
 
 app.use(Express.static(filePath));
-
 //Listen
 app.listen(PORT, () => {
     console.log("Server in port", PORT);
