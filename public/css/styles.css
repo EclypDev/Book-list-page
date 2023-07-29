@@ -110,6 +110,7 @@ main {
   border-radius: var(--border);
   border: none;
   background-color: var(--green-button);
+  margin: 5px;
 }
 
 

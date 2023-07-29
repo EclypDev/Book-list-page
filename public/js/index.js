@@ -71,20 +71,30 @@ function showBooks(name, img, desc, author, element) {
         const bookListItemButtons = document.createElement("div");
         bookListItemButtons.setAttribute("class", "book-list-item-buttons");
         const bookListItemButtonsSee = document.createElement("button");
+        const bookListItemButtonsDelete = document.createElement("button");
+        bookListItemButtonsDelete.innerHTML = "Eliminar";
+        bookListItemButtonsDelete.style.backgroundColor = "#d9373f";
+        bookListItemButtonsDelete.setAttribute("value", name);
+        bookListItemButtonsDelete.setAttribute(
+            "class",
+            "buttonSee delete-book"
+        );
 
         let datosRecuperadosJSON = localStorage.getItem("books_read");
         let datosRecuperados = JSON.parse(datosRecuperadosJSON);
-
+        bookListItemButtonsSee.innerHTML = "Agregar";
+        bookListItemButtonsSee.setAttribute("class", "buttonSee noReaded");
+        bookListItemButtonsSee.setAttribute("value", name);
         if (datosRecuperados.includes(name)) {
             bookListItemButtonsSee.innerHTML = "Ver";
             bookListItemButtonsSee.style.backgroundColor = "#ca6201";
             bookListItemButtonsSee.setAttribute("class", "buttonSee readed");
-        } else {
-            bookListItemButtonsSee.innerHTML = "Agregar";
-            bookListItemButtonsSee.setAttribute("class", "buttonSee");
         }
-        bookListItemButtonsSee.setAttribute("value", name);
+
         bookListItemButtons.append(bookListItemButtonsSee);
+        if (datosRecuperados.includes(name)) {
+            bookListItemButtons.append(bookListItemButtonsDelete);
+        }
         bookListItem.append(bookListItemTitle);
         bookListItem.append(bookListItemdetails);
         bookListItem.append(bookListItemButtons);
@@ -137,7 +147,7 @@ fetch("http://localhost:3000/api/v1/books")
     });
 
 //Guardar libros personales
-$(document).on("click", ".buttonSee", function () {
+$(document).on("click", ".noReaded", function () {
     let valor = $(this).attr("value");
     const url = `http://localhost:3000/api/v1/book/${valor}`;
 
@@ -152,12 +162,26 @@ $(document).on("click", ".buttonSee", function () {
             }
         });
 });
+//Eliminar un libro de la lista personal.
+$(document).on("click", ".delete-book", function () {
+    let valor = $(this).attr("value");
+    let datosRecuperadosJSON = localStorage.getItem("books_read");
+    let datosRecuperados = JSON.parse(datosRecuperadosJSON);
 
+    function findIndexAndRemove(data, value) {
+        const index = data.indexOf(value);
+        if (index !== -1) {
+            data.splice(index, 1); // Elimina 1 elemento en el índice encontrado
+            localStorage.setItem("books_read", JSON.stringify(data));
+        }
+    }
+
+    findIndexAndRemove(datosRecuperados, valor);
+});
+//Redirije a la pagina book
 $(document).on("click", ".readed", function () {
     let valor = $(this).attr("value");
     localStorage.removeItem("book_page");
     localStorage.setItem("book_page", JSON.stringify(valor));
-    let bookPageJSON = localStorage.getItem("book_page");
-    let bookPage = JSON.parse(bookPageJSON);
     window.location.href = "http://localhost:3000/book";
 });
