@@ -1,32 +1,31 @@
 :root {
- --main-color: #7fff7f;
---error-color: #fe3c45;
---hover-buy: #48995d;
---hover-sell: #d9373f;
---hover-info: #218bdf;
---background-color: #1e1e29;
---second-background: #2c2c3c;
---third-background: #373749;
---fourth-background: #1e1e29;
---package-border: #454559;
---border: 5px;
---primary-text-color: #ffffff;
---secondary-text-color: #aeaeae;
---green-button: #4da564;
---font-family: Montserrat, sans-serif;
---opacity-image: 0.8;
---blur-image: 5px;
---accent-color: #ca6201;
---link-color: #007bff;
---highlight-color: #ff6b6b;
---dark-text-color: #333333;
---light-text-color: #f5f5f5;
---neutral-color: #cccccc;
-
+  --main-color: #7fff7f;
+  --error-color: #fe3c45;
+  --hover-buy: #48995d;
+  --hover-sell: #d9373f;
+  --hover-info: #218bdf;
+  --background-color: #1e1e29;
+  --second-background: #2c2c3c;
+  --third-background: #373749;
+  --fourth-background: #1e1e29;
+  --package-border: #454559;
+  --border: 5px;
+  --primary-text-color: #ffffff;
+  --secondary-text-color: #aeaeae;
+  --green-button: #4da564;
+  --font-family: Montserrat, sans-serif;
+  --opacity-image: 0.8;
+  --blur-image: 5px;
+  --accent-color: #ca6201;
+  --link-color: #007bff;
+  --highlight-color: #ff6b6b;
+  --dark-text-color: #333333;
+  --light-text-color: #f5f5f5;
+  --neutral-color: #cccccc;
 }
 
 body {
-  font-family: --font-family;
+  font-family: var(--font-family);
   margin: 0;
   padding: 0;
   background-color: var(--background-color);
@@ -38,6 +37,7 @@ header {
   padding: 20px;
   height: 100px;
 }
+
 footer {
   background-color: var(--second-background);
   padding: 20px;
@@ -47,34 +47,72 @@ main {
   padding: 20px;
 }
 
-  h1, h3 {
-    font-size: 3em;
-    color: var(--hover-buy);
-    text-align: center;
-    text-shadow: 1px 2px 5px var(--shadow-color);
-  }
-  h2 {
-    text-align: center;
-    color: rgba(189, 0, 189, 1);
-    
-  }
+h1, h3 {
+  font-size: 3em;
+  color: var(--hover-buy);
+  text-align: center;
+  text-shadow: 1px 2px 5px var(--shadow-color);
+}
+
+h2 {
+  text-align: center;
+  color: rgba(189, 0, 189, 1);
+}
+
+h5 {
+  color: #aeaeae;
+  padding: 0;
+  display: inline;
+  margin: 5px;
+}
+
+.info h6 {
+  display: inline;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  padding: -40px;
+}
+
+section h5 {
+  color: var(--green-button);
+  font-size: 1em;
+}
+
+select {
+  color: #000;
+  background-color: var(--package-border);
+  border: #181818 solid 1px;
+  height: 30px;
+  width: 150px;
+  border-radius: var(--border);
+  box-shadow: 0px 0px 2px #000;
+}
+
 .subtitles {
   width: auto;
   border-radius: var(--border);
   background-color: var(--second-background);
+  height: auto;
+  box-shadow: 0px 0px 1px #000;
 }
 
-/* Estilos específicos para las secciones */
+#categorias-libros-disponibles {
+  margin: 5px;
+}
+
 #categorias {
   margin-bottom: 20px;
 }
 
-#libros, #lista-lectura {
+#libros,
+#lista-lectura {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 40px;
 }
-
 
 .book-list-item-title-img {
   margin: auto;
@@ -83,6 +121,7 @@ main {
   max-height: 50%;
   cursor: default;
 }
+
 .book-list-item-details-p {
   color: var(--secondary-text-color);
   font-weight: 700;
@@ -90,16 +129,18 @@ main {
   margin: 10px 0;
   word-break: break-all;
 }
+
 .book-list-item-details-desc-p {
-    display: inline-block;
-    color: var(--primary-text-color);
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    
+  display: inline-block;
+  color: var(--primary-text-color);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
 }
+
 .book-list-item:hover {
-  scale: 1.02
+  scale: 1.02;
 }
+
 .book-list-item {
   background: var(--third-background);
   border-radius: 5px;
@@ -109,6 +150,7 @@ main {
   min-height: 200px;
   box-shadow: 2px 2px 2px rgba(255, 107, 255, 0.5);
 }
+
 .buttonSee {
   height: 40px;
   width: 100%;
@@ -118,12 +160,12 @@ main {
   margin: 5px;
 }
 
-
 .buttonSee:hover {
   background-color: var(--hover-buy);
   box-shadow: 2px 2px 2px rgba(255, 107, 255, 0.5);
   cursor: pointer;
 }
+
 .buttonSee:active {
   background-color: var(--hover-buy);
   box-shadow: 2px 2px 2px rgba(255, 107, 255, 0.5);
@@ -135,42 +177,30 @@ main {
   cursor: pointer;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 @media (min-width: 300px) {
   .book-list-item {
     max-width: 95%;
     width: 100%;
+  }
 }
-}
+
 @media (min-width: 500px) {
   .book-list-item {
     max-width: 33%;
     width: 100%;
+  }
 }
-}
+
 @media (min-width: 750px) {
   .book-list-item {
     max-width: 190px;
     width: 23%;
-}
+  }
 }
 
 @media (min-width: 1024px) {
   .book-list-item {
     max-width: 190px;
     width: var(--book-packet-size);
+  }
 }
-
-}
-

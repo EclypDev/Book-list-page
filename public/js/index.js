@@ -9,7 +9,7 @@
         localStorage.setItem("book_page", JSON.stringify("Juego de Tronos"));
     }
 })();
-// Función para mostrar libros en la página web
+
 function GuardarLibrosLeidos(bookIn) {
     let title = bookIn.book.title;
     if (localStorage.getItem("books_read") == null) {
@@ -26,7 +26,7 @@ function GuardarLibrosLeidos(bookIn) {
             );
         }
     }
-}
+} // Función para guardar libros leidos
 function GuardarCategoriaSeleccionada() {
     let categorySel = document.getElementById("categoriaSeleccionada");
     categorySel.addEventListener("change", function () {
@@ -35,13 +35,14 @@ function GuardarCategoriaSeleccionada() {
         // Guardar el valor seleccionado en localStorage
         localStorage.setItem("category_selected", valorSeleccionado);
     });
-}
+} // Función para guardar la categoria
 function showBooks(name, img, desc, author, gen, element) {
     let categorySel = $(".category");
     let categorySelected = categorySel.val();
     function createElementsAppend() {
         let bookListItem = document.createElement("div");
         bookListItem.setAttribute("class", "book-list-item");
+        bookListItem.setAttribute("id", "book-disponible");
         let bookListItemTitle = document.createElement("div");
         bookListItemTitle.setAttribute("class", "book-list-item-title");
         let bookImg = document.createElement("img");
@@ -68,7 +69,7 @@ function showBooks(name, img, desc, author, gen, element) {
             "class",
             "book-list-item-details-desc-p"
         );
-        bookListItemdetailsDescP.innerHTML = desc + gen;
+        bookListItemdetailsDescP.innerHTML = desc;
         bookListItemdetailsDesc.append(bookListItemdetailsDescP);
         bookListItemdetails.append(bookListItemdetailsDesc);
         let bookListItemdetailsDescPAuthor = document.createElement("p");
@@ -94,12 +95,14 @@ function showBooks(name, img, desc, author, gen, element) {
         let datosRecuperadosJSON = localStorage.getItem("books_read");
         let datosRecuperados = JSON.parse(datosRecuperadosJSON);
         bookListItemButtonsSee.innerHTML = "Agregar";
-        bookListItemButtonsSee.setAttribute("class", "buttonSee noReaded");
+        bookListItemButtonsSee.setAttribute("class", "buttonSee anadir");
+        bookListItemButtonsSee.setAttribute("id", "anadir");
         bookListItemButtonsSee.setAttribute("value", name);
         if (datosRecuperados.includes(name)) {
             bookListItemButtonsSee.innerHTML = "Ver";
             bookListItemButtonsSee.style.backgroundColor = "#ca6201";
             bookListItemButtonsSee.setAttribute("class", "buttonSee readed");
+            bookListItemButtonsSee.setAttribute("id", "readed");
         }
 
         bookListItemButtons.append(bookListItemButtonsSee);
@@ -115,8 +118,7 @@ function showBooks(name, img, desc, author, gen, element) {
     element.append(createElementsAppend());
 
     //Title
-}
-// Obtener los libros de la API y mostrarlos en la página
+} //Funcion para mostrar lista de libros disponibles
 function showBooksPersonal() {
     let datosRecuperadosJSON = localStorage.getItem("books_read");
     let datosRecuperados = JSON.parse(datosRecuperadosJSON);
@@ -139,7 +141,7 @@ function showBooksPersonal() {
                 }
             });
         });
-}
+} //Funcion para mostrar lista de libros personales
 function EstablecerCategoria() {
     const elementOp = document.querySelector(".category");
     const valorPorDefecto = localStorage.getItem("category_selected");
@@ -200,11 +202,8 @@ fetch("http://localhost:3000/api/v1/books")
         showBooksPersonal();
     });
 
-GuardarCategoriaSeleccionada();
-EstablecerCategoria();
-
-//Guardar libros personales
-$(document).on("click", ".noReaded", function () {
+//Guardar a libros personales
+$(document).on("click", ".anadir", function () {
     let valor = $(this).attr("value");
     let url = `http://localhost:3000/api/v1/book/${valor}`;
 
@@ -242,3 +241,21 @@ $(document).on("click", ".readed", function () {
     localStorage.setItem("book_page", JSON.stringify(valor));
     window.location.href = "http://localhost:3000/book";
 });
+GuardarCategoriaSeleccionada();
+EstablecerCategoria();
+
+function mostrarNumeroDeElementos(element, append) {
+    let containerDisponibles = $(append);
+    let disponibleH5 = document.createElement("h5");
+    let numeroDeElementos = document.querySelectorAll(element).length;
+    disponibleH5.innerHTML = numeroDeElementos;
+
+    containerDisponibles.append(disponibleH5);
+}
+
+setTimeout(function () {
+    mostrarNumeroDeElementos("#anadir", "#disponibles");
+}, 200);
+setTimeout(function () {
+    mostrarNumeroDeElementos("#readed", "#lectura");
+}, 200);

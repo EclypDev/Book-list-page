@@ -63,8 +63,6 @@ function showBook(name, pages, genr, img, desc, year, isbn, author, element) {
         return bookListItem;
     }
     element.append(createElementsAppend());
-
-    //Title
 }
 
 let localbookJSON = localStorage.getItem("book_page");
