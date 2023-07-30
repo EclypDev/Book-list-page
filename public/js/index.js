@@ -27,40 +27,51 @@ function GuardarLibrosLeidos(bookIn) {
         }
     }
 }
-function showBooks(name, img, desc, author, element) {
+function GuardarCategoriaSeleccionada() {
+    let categorySel = document.getElementById("categoriaSeleccionada");
+    categorySel.addEventListener("change", function () {
+        let valorSeleccionado = this.value;
+
+        // Guardar el valor seleccionado en localStorage
+        localStorage.setItem("category_selected", valorSeleccionado);
+    });
+}
+function showBooks(name, img, desc, author, gen, element) {
+    let categorySel = $(".category");
+    let categorySelected = categorySel.val();
     function createElementsAppend() {
-        const bookListItem = document.createElement("div");
+        let bookListItem = document.createElement("div");
         bookListItem.setAttribute("class", "book-list-item");
-        const bookListItemTitle = document.createElement("div");
+        let bookListItemTitle = document.createElement("div");
         bookListItemTitle.setAttribute("class", "book-list-item-title");
-        const bookImg = document.createElement("img");
+        let bookImg = document.createElement("img");
         bookImg.setAttribute("src", img);
         bookImg.setAttribute("alt", name);
         bookImg.setAttribute("class", "book-list-item-title-img");
         bookListItemTitle.append(bookImg);
 
         //Details
-        const bookListItemdetails = document.createElement("div");
+        let bookListItemdetails = document.createElement("div");
         bookListItemdetails.setAttribute("class", "book-list-item-details");
-        const bookListItemdetailsP = document.createElement("p");
+        let bookListItemdetailsP = document.createElement("p");
         bookListItemdetailsP.setAttribute("class", "book-list-item-details-p");
         bookListItemdetailsP.innerHTML = name;
         bookListItemdetails.append(bookListItemdetailsP);
-        const bookListItemdetailsDesc = document.createElement("div");
+        let bookListItemdetailsDesc = document.createElement("div");
         bookListItemdetailsDesc.setAttribute(
             "class",
             "book-list-item-details-desc"
         );
         bookListItemdetails.append(bookListItemdetailsDesc);
-        const bookListItemdetailsDescP = document.createElement("p");
+        let bookListItemdetailsDescP = document.createElement("p");
         bookListItemdetailsDescP.setAttribute(
             "class",
             "book-list-item-details-desc-p"
         );
-        bookListItemdetailsDescP.innerHTML = desc;
+        bookListItemdetailsDescP.innerHTML = desc + gen;
         bookListItemdetailsDesc.append(bookListItemdetailsDescP);
         bookListItemdetails.append(bookListItemdetailsDesc);
-        const bookListItemdetailsDescPAuthor = document.createElement("p");
+        let bookListItemdetailsDescPAuthor = document.createElement("p");
         bookListItemdetailsDescPAuthor.setAttribute(
             "class",
             "book-list-item-details-desc-p-author"
@@ -68,10 +79,10 @@ function showBooks(name, img, desc, author, element) {
         bookListItemdetailsDescPAuthor.innerHTML = "Por " + author;
         bookListItemdetailsDesc.append(bookListItemdetailsDescPAuthor);
         //Buttons
-        const bookListItemButtons = document.createElement("div");
+        let bookListItemButtons = document.createElement("div");
         bookListItemButtons.setAttribute("class", "book-list-item-buttons");
-        const bookListItemButtonsSee = document.createElement("button");
-        const bookListItemButtonsDelete = document.createElement("button");
+        let bookListItemButtonsSee = document.createElement("button");
+        let bookListItemButtonsDelete = document.createElement("button");
         bookListItemButtonsDelete.innerHTML = "Eliminar";
         bookListItemButtonsDelete.style.backgroundColor = "#d9373f";
         bookListItemButtonsDelete.setAttribute("value", name);
@@ -116,40 +127,86 @@ function showBooksPersonal() {
                 let name = book.book.title;
                 let img = book.book.cover;
                 let desc = book.book.synopsis;
+                let gen = book.book.genre;
                 let author = book.book.author.name;
                 let gridlayout = $("#lista-lectura");
-                if (datosRecuperados.includes(name)) {
-                    showBooks(name, img, desc, author, gridlayout);
+                let generoLocalStorage =
+                    localStorage.getItem("category_selected");
+                if (generoLocalStorage == gen) {
+                    if (datosRecuperados.includes(name)) {
+                        showBooks(name, img, desc, author, gen, gridlayout);
+                    }
                 }
             });
         });
 }
-
+function EstablecerCategoria() {
+    const elementOp = document.querySelector(".category");
+    const valorPorDefecto = localStorage.getItem("category_selected");
+    if (valorPorDefecto) {
+        const optionPorDefecto = document.createElement("option");
+        optionPorDefecto.value = valorPorDefecto;
+        optionPorDefecto.textContent = valorPorDefecto;
+        elementOp.appendChild(optionPorDefecto);
+        elementOp.value = valorPorDefecto;
+    }
+}
 //Obtiene datos desde la api (libros)
 fetch("http://localhost:3000/api/v1/books")
     .then((response) => response.json())
     .then((books) => {
-        books.forEach((book) => {
-            let datosRecuperadosJSON = localStorage.getItem("books_read");
-            let datosRecuperados = JSON.parse(datosRecuperadosJSON);
+        let datosRecuperadosJSON = localStorage.getItem("books_read");
+        let datosRecuperados = JSON.parse(datosRecuperadosJSON) || []; // Si no hay datos, se inicializa como un array vacío
 
+        let elementOp = document.querySelector(".category");
+        let generoLocalStorage = localStorage.getItem("category_selected");
+
+        books.forEach((book) => {
             let name = book.book.title;
             let img = book.book.cover;
             let desc = book.book.synopsis;
             let author = book.book.author.name;
+            let gen = book.book.genre;
             let gridlayout = $("#libros");
 
-            if (!datosRecuperados.includes(name)) {
-                showBooks(name, img, desc, author, gridlayout);
+            // Mover la función createOptions fuera del bucle
+            function createOptions(genero, elementOption) {
+                let opcionesExistentes =
+                    elementOption.querySelectorAll("option");
+                let valorExistente = Array.from(opcionesExistentes).some(
+                    (opcion) => opcion.value === genero
+                );
+
+                if (!valorExistente) {
+                    let option = document.createElement("option");
+                    option.setAttribute("value", genero);
+                    option.innerHTML = genero;
+                    // Append solo si el valor no existe aún
+                    elementOption.append(option);
+                }
+            }
+
+            // Llamada a la función createOptions fuera del condicional
+            createOptions(gen, elementOp);
+
+            // Corregir la condición para comparar adecuadamente los valores
+            if (generoLocalStorage === gen) {
+                if (!datosRecuperados.includes(name)) {
+                    showBooks(name, img, desc, author, gen, gridlayout);
+                }
             }
         });
+
         showBooksPersonal();
     });
+
+GuardarCategoriaSeleccionada();
+EstablecerCategoria();
 
 //Guardar libros personales
 $(document).on("click", ".noReaded", function () {
     let valor = $(this).attr("value");
-    const url = `http://localhost:3000/api/v1/book/${valor}`;
+    let url = `http://localhost:3000/api/v1/book/${valor}`;
 
     fetch(url)
         .then((response) => response.json())
@@ -169,7 +226,7 @@ $(document).on("click", ".delete-book", function () {
     let datosRecuperados = JSON.parse(datosRecuperadosJSON);
 
     function findIndexAndRemove(data, value) {
-        const index = data.indexOf(value);
+        let index = data.indexOf(value);
         if (index !== -1) {
             data.splice(index, 1); // Elimina 1 elemento en el índice encontrado
             localStorage.setItem("books_read", JSON.stringify(data));

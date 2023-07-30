@@ -85,3 +85,8 @@ fetch(URL)
         let element = document.querySelector(".book-zone");
         showBook(title, pages, genr, img, desc, year, isbn, author, element);
     });
+
+$("#return-button").on("click", (e) => {
+    e.preventDefault();
+    window.location.href = "http://localhost:3000/";
+});

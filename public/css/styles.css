@@ -54,12 +54,14 @@ main {
     text-shadow: 1px 2px 5px var(--shadow-color);
   }
   h2 {
-    color: var(--hover-info)
+    text-align: center;
+    color: rgba(189, 0, 189, 1);
+    
   }
 .subtitles {
   width: auto;
   border-radius: var(--border);
-  background-color: var(--green-button);
+  background-color: var(--second-background);
 }
 
 /* Estilos específicos para las secciones */
@@ -94,6 +96,9 @@ main {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     
+}
+.book-list-item:hover {
+  scale: 1.02
 }
 .book-list-item {
   background: var(--third-background);
